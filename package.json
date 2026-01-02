@@ -13,7 +13,8 @@
     "install": "^0.13.0",
     "npm": "^11.7.0",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "swr": "^2.3.8"
   },
   "devDependencies": {
     "@types/node": "20.11.30",
