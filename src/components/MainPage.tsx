@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Input, Table, Layout, Checkbox, Button } from 'antd';
 import useSWR from 'swr';
 import type { ColumnsType } from 'antd/es/table';
+import { Todo } from '../../backend/generated/prisma/client';
 
 const { Content } = Layout;
 
 const fetcher = (url: string, options?: RequestInit) =>
   fetch(`http://localhost:3000${url}`, options).then(res => res.json());
 
-interface Todo {
-  key: number;
-  task: string;
-  completed: boolean;
-}
 
 const MainPage: React.FC = () => {
   const { data: todos, mutate: mutateTodos } = useSWR<Todo[]>('/todos', fetcher);
