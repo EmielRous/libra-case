@@ -6,13 +6,14 @@ import { AiIntegrationService } from './ai-integration.service.js';
 
 @Injectable()
 export class AppService {
+
   constructor(
     private prisma: PrismaService,
     private aiIntegrationService: AiIntegrationService,
   ) {}
 
   async getTodos(): Promise<Todo[]> {
-    return this.prisma.todo.findMany({where: {isConcept: false, parentTodo: null}});
+    return this.prisma.todo.findMany({where: {isConcept: false, parentTodo: null}, include: {subtodos: true}});
   }
 
   async addTodo(todo: Omit<Todo, 'key' | 'subtodos' | "parentTodo">): Promise<Todo> {
@@ -67,6 +68,26 @@ export class AppService {
   async deleteTodo(key: number): Promise<void> {
     await this.prisma.todo.delete({
       where: { key },
+    });
+  }
+
+  async rerunSubtodo(key: number, rerunQuerytext: string) {
+    const subtodo = await this.prisma.todo.findUniqueOrThrow({ where: { key } });
+
+    if (!subtodo.parentTodoId) {
+      throw Error('Todo doesnt have a parentId');
+    }
+
+    const parentTodo = await this.prisma.todo.findUniqueOrThrow({ where: { key: subtodo.parentTodoId } });
+    if (!parentTodo) {
+      throw Error('cant find parent todo');
+    }
+
+    const updatedTask = await this.aiIntegrationService.rerunSubtodo(parentTodo, rerunQuerytext);
+
+    await this.prisma.todo.update({
+      where: { key },
+      data: { task: updatedTask },
     });
   }
 }

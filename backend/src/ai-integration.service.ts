@@ -1,6 +1,7 @@
 // ai-integration.service.ts
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
+import { Todo } from '../generated/prisma/client.js';
 
 @Injectable()
 export class AiIntegrationService {
@@ -12,25 +13,45 @@ export class AiIntegrationService {
     });
   }
 
-  async generateSubTodos(task: string): Promise<string[]> {
-    const prompt = `Generate sub-todos for the following task: "${task}". Only answer with the todos nothing else and put each todo on a new line`;
-    const models = await this.openai.models.list();
-    for (const m of models.data) {
-      console.log(m.id);
-    }
+  async callUntilValid(instructions: string, input: string): Promise<string[]> {
+    let subTasksText: string;
+    let subTasks: string[];
 
-    const response = await this.openai.completions.create({
+    while (true) {
+      const response = await this.openai.responses.create({
+        model: 'gpt-5.1',
+        instructions,
+        input,
+      });
+
+      subTasksText = response.output_text.trim();
+
+      try {
+        subTasks = JSON.parse(subTasksText);
+        if (Array.isArray(subTasks)) {
+          return subTasks;
+        }
+      } catch (error) {
+        console.error('Failed to parse JSON:', error);
+      }
+    }
+  }
+
+  async generateSubTodos(task: string): Promise<string[]> {
+    const instructions = 'Generate subtasks for the following task. Your only response can be a JSON with the format: ["**", "**", "**"] where ** are the subtasks';
+    return this.callUntilValid(instructions, task);
+  }
+
+
+  async rerunSubtodo(mainTodo: Todo, queryText: string): Promise<string> {
+    const instructions = 'Please rewrite this subtodo using the comment from the queryText. The maintodo is added for reference. Make sure the todo makes sense in the context of the main and other subtodos. Only return the updated subtodo nothing else'
+    const response = await this.openai.responses.create({
       model: 'gpt-5.1',
-      prompt,
-      max_tokens: 100,
+      instructions,
+      input: JSON.stringify({mainTodo, queryText}),
     });
 
-    const subTasksText = response.choices[0].text?.trim();
+    const subTasksText = response.output_text.trim();
     return subTasksText
-      ? subTasksText
-        .split('\n')
-        .map(sub => sub.trim())
-        .filter(sub => sub.length > 0)
-      : [];
   }
 }

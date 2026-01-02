@@ -17,6 +17,16 @@ export class AppController {
     return this.appService.addTodo(todo);
   }
 
+  @Post('rerun-subtodo/:key')
+  rerunSubtodo(@Param('key') key: string,@Body() rerunQuerytext: string) {
+    return this.appService.rerunSubtodo(Number(key), rerunQuerytext);
+  }
+
+  @Put('generate-subtodos/:key')
+  generateSubtodos(@Param('key') key: string): Promise<Todo> {
+    return this.appService.addSubtodos(Number(key));
+  }
+
   @Put(':key')
   updateTodo(@Param('key') key: string): Promise<Todo> {
 

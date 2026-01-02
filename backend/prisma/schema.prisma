@@ -14,6 +14,6 @@ model Todo {
   isConcept    Boolean @default(false)
   todoKey      Int?
   parentTodoId Int?
-  parentTodo   Todo?   @relation("Subtodos", fields: [parentTodoId], references: [key])
+  parentTodo   Todo?   @relation("Subtodos", fields: [parentTodoId], references: [key], onDelete: Cascade)
   subtodos     Todo[]  @relation("Subtodos")
 }
