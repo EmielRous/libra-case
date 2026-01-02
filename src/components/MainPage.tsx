@@ -104,12 +104,19 @@ const MainPage: React.FC = () => {
         </div>
         <div>
           {isSubtodo ? (
+            <>    <Button
+              type="link"
+              icon={<DeleteOutlined />}
+              onClick={() => handleDeleteTodo(todo.key)}
+              title="Delete this item"
+            />
             <Button
               type="link"
               icon={<RedoOutlined />}
               onClick={() => handleRerunSubtodo(todo)}
               title="Rerun this subtask"
             />
+            </>
           ) : (
             <>
               <Button
