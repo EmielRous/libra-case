@@ -1045,6 +1045,11 @@
     path-to-regexp "8.3.0"
     tslib "2.8.1"
 
+"@nestjs/mapped-types@*":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-2.1.0.tgz#b9b536b7c3571567aa1d0223db8baa1a51505a19"
+  integrity sha512-W+n+rM69XsFdwORF11UqJahn4J3xi4g/ZEOlJNL6KoW5ygWSmBB2p0S2BZ4FQeS/NDH72e6xIcu35SfJnE8bXw==
+
 "@nestjs/platform-express@^11.0.1":
   version "11.1.11"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.11.tgz#dfb77659cbc45ef8903de5a48927a56cb7c7d1b2"
@@ -4298,6 +4303,11 @@ onetime@^5.1.0, onetime@^5.1.2:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
+
+openai@^6.15.0:
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-6.15.0.tgz#94f23643a50206a6ae889e9df8fc3bfb2dbf2c2b"
+  integrity sha512-F1Lvs5BoVvmZtzkUEVyh8mDQPPFolq4F+xdsx/DO8Hee8YF3IGAlZqUIsF+DVGhqf4aU0a3bTghsxB6OIsRy1g==
 
 optionator@^0.9.3:
   version "0.9.4"
