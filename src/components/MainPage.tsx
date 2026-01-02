@@ -134,7 +134,7 @@ const MainPage: React.FC = () => {
 
   const columns: ColumnsType<Todo> = [
     {
-      title: 'Completed',
+      title: 'Todos',
       dataIndex: 'completed',
       key: 'completed',
       render: (_, record) => <TodoRow todo={record} />
