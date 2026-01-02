@@ -13,14 +13,17 @@ export class AppService {
   ) {}
 
   async getTodos(): Promise<Todo[]> {
-    return this.prisma.todo.findMany({where: {isConcept: false, parentTodo: null}, include: {subtodos: true}});
+    return this.prisma.todo.findMany({
+      where: { isConcept: false, parentTodo: null },
+      include: { subtodos: true },
+      orderBy: { key: 'asc' }
+    });
   }
 
   async addTodo(todo: Omit<Todo, 'key' | 'subtodos' | "parentTodo">): Promise<Todo> {
    return  this.prisma.todo.create({
       data: todo,
     });
-
   }
 
   async addSubtodos(key: number)  {
