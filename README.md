@@ -58,7 +58,9 @@ yarn
 
 ## 🗃 Setting Up Prisma (IMPORTANT)
 
-Run from **/backend**:
+Make sure to create an empty database called `libra-case` before doing this!
+
+Then Run from **/backend**:
 
 ```bash
 cd backend
